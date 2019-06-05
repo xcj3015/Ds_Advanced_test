@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 1);
 
 
+        //  我成功了
 
         findViewById(R.id.test_bt1).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,27 +1,30 @@
 package bwei.com;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
-import java.util.ArrayList;
+import java.io.IOException;
+
 
 public class MainActivity extends AppCompatActivity {
 
     int REQUEST_CODE = 0 ;
-    private int REQUEST_ERWERMA_CODE;
+    int REQUEST_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        findViewById(R.id.test_bt2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,TwoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.test_bt3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //打开手机中的相册
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType ("image/*");
+                startActivityForResult(intent, REQUEST_IMAGE);
+            }
+        });
     }
 
     @Override
@@ -63,6 +85,29 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+        else if (requestCode == REQUEST_IMAGE) {
+            if (data != null){
+                Uri uri = data.getData();
+
+                try
+                {
+                    CodeUtils.analyzeBitmap(ImageUtil.getImageAbsolutePath(this, uri), new CodeUtils.AnalyzeCallback() {
+                        @Override
+                        public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
+                            Toast.makeText(MainActivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onAnalyzeFailed() {
+                            Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

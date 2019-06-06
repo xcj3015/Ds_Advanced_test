@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <Button
@@ -11,5 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="测试二维码扫描"/>
+
+    <Button
+        android:id="@+id/test_bt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="生成二维码"/>
+
+    <Button
+        android:id="@+id/test_bt3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择图片进行解析"/>
 
 </LinearLayout>
